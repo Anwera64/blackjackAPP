@@ -70,6 +70,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     @IBAction func reset(_ sender: UIButton) {
+        traverseCards(function: cancelTap, cardArray: cardsCollection)
         resultLabel.text = ""
         gameManager.resetTurn()
         firstSteps()

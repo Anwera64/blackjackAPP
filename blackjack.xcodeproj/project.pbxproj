@@ -485,7 +485,7 @@
 		3A0E237D209CAE65004ED5F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P8J2DS2Z2V;
 				INFOPLIST_FILE = blackjack/Info.plist;
@@ -503,7 +503,7 @@
 		3A0E237E209CAE65004ED5F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P8J2DS2Z2V;
 				INFOPLIST_FILE = blackjack/Info.plist;

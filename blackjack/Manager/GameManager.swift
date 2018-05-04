@@ -87,5 +87,7 @@ class GameManager {
     
     func resetTurn() {
         playerTurn = .house
+        cartasCasa = Array()
+        cartasJugador = Array()
     }
 }
