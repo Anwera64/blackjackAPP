@@ -24,22 +24,23 @@ class CartaView: UIView {
             setNeedsDisplay()
         }
     }
+    var tappable = false
     
     func removeTap() {
-        let tapRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(voltear(_:)))
-        removeGestureRecognizer(tapRecognizer)
+        tappable = false
     }
     
     func instantiate(_ carta: Carta, delegate: onTouchDelegate) {
         self.carta = carta
         self.delegate = delegate
         if volteada { self.volteada = false }
+        let tapRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(voltear(_:)))
+        addGestureRecognizer(tapRecognizer)
+        tappable = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        let tapRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(voltear(_:)))
-        addGestureRecognizer(tapRecognizer)
     }
     
     // Only override draw() if you perform custom drawing.
@@ -50,7 +51,7 @@ class CartaView: UIView {
         let size = self.bounds.size
         if volteada {
             let label = UILabel(frame: CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height))
-            label.text = String(carta!.numero) + carta!.palo.rawValue
+            label.text = String(carta!.numero) + carta!.palo.getString()
             label.textAlignment = .center
             self.addSubview(label)
         } else {
@@ -62,7 +63,7 @@ class CartaView: UIView {
     
     @objc
     func voltear(_ gestureRecognizer : UIGestureRecognizer? = nil) {
-        if carta != nil && !volteada {
+        if carta != nil && !volteada && tappable {
             volteada = !volteada
             delegate?.onTouch(carta: carta!)
         }

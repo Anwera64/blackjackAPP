@@ -8,9 +8,22 @@
 
 import Foundation
 
-enum Palo: String {
-    case hearts = "♥️"
-    case diamonds = "♦️"
-    case spades = "♠️"
-    case clubs = "♣️"
+enum Palo: Int {
+    case hearts = 0
+    case diamonds = 1
+    case spades = 2
+    case clubs = 3
+    
+    func getString() -> String {
+        switch self {
+        case .hearts:
+            return "♥️"
+        case .diamonds:
+            return "♦️"
+        case .spades:
+            return "♠️"
+        case .clubs:
+            return "♣️"
+        }
+    }
 }

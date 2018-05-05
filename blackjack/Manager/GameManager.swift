@@ -11,11 +11,21 @@ import Foundation
 protocol gameDelegate {
     func endGame(winner: String)
     func playerChange(newPlayer: Player)
+    func updateCounter(number: Int)
 }
 
 enum Player: String {
     case player = "Jugador"
     case house = "Casa"
+    
+    func getOppositeValue() -> String {
+        switch self {
+        case .player:
+            return Player.house.rawValue
+        case .house:
+            return Player.player.rawValue
+        }
+    }
 }
 
 class GameManager {
@@ -67,22 +77,29 @@ class GameManager {
     }
     
     func check21(cartas: [Carta]) {
-        var suma = 0
+        let suma = count(cartas)
+        if suma == 21 {
+            delegate.endGame(winner: playerTurn.rawValue)
+        } else if playerTurn == .house && !cartasJugador.isEmpty && suma > count(cartasJugador) {
+            delegate.endGame(winner: playerTurn.rawValue)
+        }
+    }
+    
+    func count(_ cartas: [Carta]) -> Int {
+        var suma: Int = 0
         for carta in cartas {
             suma += carta.numero
             if suma > 21 {
                 switch playerTurn {
                 case .player:
-                    delegate.endGame(winner: Player.house.rawValue)
+                    delegate.endGame(winner: playerTurn.getOppositeValue())
                     break
                 case .house:
-                    delegate.endGame(winner: Player.player.rawValue)
+                    delegate.endGame(winner: playerTurn.getOppositeValue())
                 }
             }
         }
-        if suma == 21 {
-            delegate.endGame(winner: playerTurn.rawValue)
-        }
+        return suma
     }
     
     func resetTurn() {

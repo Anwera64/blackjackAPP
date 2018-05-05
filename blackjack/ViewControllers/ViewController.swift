@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Darwin
 
 class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     
@@ -17,8 +18,10 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     @IBOutlet var playerCards: [CartaView]!
     @IBOutlet var houseCards: [CartaView]!
     @IBOutlet var earlyHouseCards: [CartaView]!
-    
-    
+    /*
+    @IBOutlet weak var houseLabel: UILabel!
+    @IBOutlet weak var playerLabel: UILabel!
+    */
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -27,7 +30,6 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     private func firstSteps() {
-        traverseCards(function: setCards, cardArray: playerCards)
         showTwoHouseCards()
     }
     
@@ -43,7 +45,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     func showTwoHouseCards() {
         var counter = 1
         for carta in earlyHouseCards {
-            carta.instantiate(Carta(10, .hearts), delegate: self)
+            carta.instantiate(createRandomCard(), delegate: self)
             carta.voltear()
             counter += 1
             if counter > 2 { break }
@@ -55,8 +57,12 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         traverseCards(function: cancelTap, cardArray: cardsCollection)
     }
     
+    private func createRandomCard() -> Carta {
+        return Carta(Int(arc4random_uniform(13)+1), Palo(rawValue: Int(arc4random_uniform(4)))!)
+    }
+    
     private func setCards(carta: CartaView) {
-        carta.instantiate(Carta(10, .hearts), delegate: self)
+        carta.instantiate(createRandomCard(), delegate: self)
     }
     
     private func cancelTap(carta: CartaView) {
@@ -83,6 +89,15 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     func playerChange(newPlayer: Player) {
         traverseCards(function: cancelTap, cardArray: newPlayer == .house ? playerCards : houseCards)
         traverseCards(function: setCards, cardArray: newPlayer == .house ? houseCards : playerCards)
+    }
+    
+    func updateCounter(number: Int) {/*
+        switch gameManager.playerTurn {
+        case .player:
+            playerLabel.text = playerLabel.text! + String(number)
+        case .house:
+            houseLabel.text = houseLabel.text! + String(number)
+        }*/
     }
 }
 
