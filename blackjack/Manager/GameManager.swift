@@ -78,6 +78,8 @@ class GameManager {
     
     func check21(cartas: [Carta]) {
         let suma = count(cartas)
+        delegate.updateCounter(number: suma)
+        if suma > 21 { return }
         if suma == 21 {
             delegate.endGame(winner: playerTurn.rawValue)
         } else if playerTurn == .house && !cartasJugador.isEmpty && suma > count(cartasJugador) {
@@ -104,7 +106,8 @@ class GameManager {
     
     func resetTurn() {
         playerTurn = .house
-        cartasCasa = Array()
-        cartasJugador = Array()
+        cartasCasa.removeAll()
+        playerTurn = .player
+        cartasJugador.removeAll()
     }
 }

@@ -17,13 +17,13 @@ enum Palo: Int {
     func getString() -> String {
         switch self {
         case .hearts:
-            return "♥️"
+            return "Hearts"
         case .diamonds:
-            return "♦️"
+            return "Diamonds"
         case .spades:
-            return "♠️"
+            return "Spades"
         case .clubs:
-            return "♣️"
+            return "Clubs"
         }
     }
 }

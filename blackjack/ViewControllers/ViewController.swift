@@ -18,10 +18,10 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     @IBOutlet var playerCards: [CartaView]!
     @IBOutlet var houseCards: [CartaView]!
     @IBOutlet var earlyHouseCards: [CartaView]!
-    /*
+    
     @IBOutlet weak var houseLabel: UILabel!
     @IBOutlet weak var playerLabel: UILabel!
-    */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -43,6 +43,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     func showTwoHouseCards() {
+        gameManager.playerTurn = .house
         var counter = 1
         for carta in earlyHouseCards {
             carta.instantiate(createRandomCard(), delegate: self)
@@ -91,13 +92,13 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         traverseCards(function: setCards, cardArray: newPlayer == .house ? houseCards : playerCards)
     }
     
-    func updateCounter(number: Int) {/*
+    func updateCounter(number: Int) {
         switch gameManager.playerTurn {
         case .player:
-            playerLabel.text = playerLabel.text! + String(number)
+            playerLabel.text = "Jugador: \(number)"
         case .house:
-            houseLabel.text = houseLabel.text! + String(number)
-        }*/
+            houseLabel.text = "Casa: \(number)"
+        }
     }
 }
 

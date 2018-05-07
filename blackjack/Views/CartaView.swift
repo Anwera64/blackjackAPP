@@ -49,15 +49,31 @@ class CartaView: UIView {
         // Drawing code\
         let origin = self.bounds.origin
         let size = self.bounds.size
-        if volteada {
-            let label = UILabel(frame: CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height))
-            label.text = String(carta!.numero) + carta!.palo.getString()
-            label.textAlignment = .center
-            self.addSubview(label)
+        if volteada, let c = carta {
+            let cardFront = UIImageView(frame: CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height))
+            cardFront.image = UIImage(named: "\(c.palo.getString())/\(translateNumber(number: c.numero))")
+            self.addSubview(cardFront)
         } else {
             let cardBack = UIImageView(frame: CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height))
             cardBack.image = #imageLiteral(resourceName: "cardback")
             self.addSubview(cardBack)
+        }
+    }
+    
+    private func translateNumber(number: Int) -> String {
+        if number > 1 && number < 11 { return String(number) }
+        
+        switch number {
+        case 1:
+            return "A"
+        case 11:
+            return "J"
+        case 12:
+            return "Q"
+        case 13:
+            return "K"
+        default:
+            return ""
         }
     }
     
