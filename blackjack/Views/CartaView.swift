@@ -36,7 +36,6 @@ class CartaView: UIView {
         if volteada { self.volteada = false }
         let tapRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(voltear(_:)))
         addGestureRecognizer(tapRecognizer)
-        tappable = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,8 +59,12 @@ class CartaView: UIView {
         }
     }
     
+    func enableTap() {
+        tappable = true
+    }
+    
     private func translateNumber(number: Int) -> String {
-        if number > 1 && number < 11 { return String(number) }
+        if number > 1, number < 11 { return String(number) }
         
         switch number {
         case 1:
@@ -79,9 +82,9 @@ class CartaView: UIView {
     
     @objc
     func voltear(_ gestureRecognizer : UIGestureRecognizer? = nil) {
-        if carta != nil && !volteada && tappable {
+        if let c = carta, !volteada, tappable {
             volteada = !volteada
-            delegate?.onTouch(carta: carta!)
+            delegate?.onTouch(carta: c)
         }
     }
     

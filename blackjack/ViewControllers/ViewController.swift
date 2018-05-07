@@ -18,6 +18,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     @IBOutlet var playerCards: [CartaView]!
     @IBOutlet var houseCards: [CartaView]!
     @IBOutlet var earlyHouseCards: [CartaView]!
+    @IBOutlet var earlyPlayerCards: [CartaView]!
     
     @IBOutlet weak var houseLabel: UILabel!
     @IBOutlet weak var playerLabel: UILabel!
@@ -26,11 +27,17 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         gameManager = GameManager(delegate: self)
+        traverseCards(function: setCards, cardArray: cardsCollection)
         firstSteps()
     }
     
     private func firstSteps() {
-        showTwoHouseCards()
+        traverseCards(function: enableTap, cardArray: earlyHouseCards)
+        traverseCards(function: enableTap, cardArray: earlyPlayerCards)
+        for _ in 0...1 {
+            traverseCards(function: tap, cardArray: gameManager.playerTurn == .house ? earlyHouseCards : earlyPlayerCards)
+            gameManager.switchPLayer()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,15 +49,8 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         gameManager.addCard(carta: carta)
     }
     
-    func showTwoHouseCards() {
-        gameManager.playerTurn = .house
-        var counter = 1
-        for carta in earlyHouseCards {
-            carta.instantiate(createRandomCard(), delegate: self)
-            carta.voltear()
-            counter += 1
-            if counter > 2 { break }
-        }
+    func tap(carta: CartaView) {
+        carta.voltear()
     }
     
     func endGame(winner: String) {
@@ -70,6 +70,10 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         carta.removeTap()
     }
     
+    private func enableTap(carta: CartaView) {
+        carta.enableTap()
+    }
+    
     private func traverseCards(function: (_ carta: CartaView) -> Void, cardArray: [CartaView]) {
         for carta in cardArray {
             function(carta)
@@ -77,7 +81,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     @IBAction func reset(_ sender: UIButton) {
-        traverseCards(function: cancelTap, cardArray: cardsCollection)
+        traverseCards(function: setCards, cardArray: cardsCollection)
         resultLabel.text = ""
         gameManager.resetTurn()
         firstSteps()
@@ -89,7 +93,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     
     func playerChange(newPlayer: Player) {
         traverseCards(function: cancelTap, cardArray: newPlayer == .house ? playerCards : houseCards)
-        traverseCards(function: setCards, cardArray: newPlayer == .house ? houseCards : playerCards)
+        traverseCards(function: enableTap, cardArray: newPlayer == .house ? houseCards : playerCards)
     }
     
     func updateCounter(number: Int) {
@@ -99,6 +103,15 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         case .house:
             houseLabel.text = "Casa: \(number)"
         }
+    }
+    
+    func playHouseCard(index: Int) {
+        tap(carta: houseCards[index])
+    }
+    
+    func revealHouseCards() {
+        traverseCards(function: enableTap, cardArray: houseCards)
+        traverseCards(function: tap, cardArray: houseCards)
     }
 }
 

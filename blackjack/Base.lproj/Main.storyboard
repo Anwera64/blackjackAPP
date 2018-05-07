@@ -72,8 +72,15 @@
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-xH-Df2">
+                                <rect key="frame" x="71" y="551" width="232" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kex-nh-AGh">
-                                <rect key="frame" x="320" y="507" width="39" height="30"/>
+                                <rect key="frame" x="320" y="430" width="39" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Reset">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -82,15 +89,8 @@
                                     <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wdx-fq-9Yy"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr9-xH-Df2">
-                                <rect key="frame" x="71" y="551" width="232" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9d-g2-JnB">
-                                <rect key="frame" x="16" y="507" width="39" height="30"/>
+                                <rect key="frame" x="16" y="430" width="39" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Pasar">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -117,12 +117,12 @@
                         <outletCollection property="cardsCollection" destination="U1y-fZ-Qei" collectionClass="NSMutableArray" id="U3t-jt-YOf"/>
                         <outletCollection property="houseCards" destination="Lso-7I-3at" collectionClass="NSMutableArray" id="6Ya-k4-Owp"/>
                         <outletCollection property="houseCards" destination="76u-ha-dp7" collectionClass="NSMutableArray" id="8aY-5l-x9r"/>
-                        <outletCollection property="playerCards" destination="U1y-fZ-Qei" collectionClass="NSMutableArray" id="NvV-X0-wae"/>
-                        <outletCollection property="playerCards" destination="i8b-jF-FGr" collectionClass="NSMutableArray" id="ztA-U0-tsZ"/>
                         <outletCollection property="playerCards" destination="tMm-jY-lQr" collectionClass="NSMutableArray" id="cYV-gX-QL8"/>
                         <outletCollection property="playerCards" destination="fkg-8w-UKW" collectionClass="NSMutableArray" id="TZS-Jj-x1x"/>
                         <outletCollection property="earlyHouseCards" destination="iiU-65-HQL" collectionClass="NSMutableArray" id="ebb-PT-ETl"/>
                         <outletCollection property="earlyHouseCards" destination="zjt-d2-1pJ" collectionClass="NSMutableArray" id="3sa-yE-1DK"/>
+                        <outletCollection property="earlyPlayerCards" destination="U1y-fZ-Qei" collectionClass="NSMutableArray" id="GHA-52-A1H"/>
+                        <outletCollection property="earlyPlayerCards" destination="i8b-jF-FGr" collectionClass="NSMutableArray" id="Zid-2r-1em"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
