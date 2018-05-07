@@ -40,11 +40,6 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func onTouch(carta: Carta) {
         gameManager.addCard(carta: carta)
     }
@@ -54,6 +49,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     func endGame(winner: String) {
+        gameManager.endGame = true
         resultLabel.text = "Ganador: "+winner
         traverseCards(function: cancelTap, cardArray: cardsCollection)
     }
@@ -110,7 +106,6 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     func revealHouseCards() {
-        traverseCards(function: enableTap, cardArray: houseCards)
         traverseCards(function: tap, cardArray: houseCards)
     }
 }

@@ -43,19 +43,19 @@ class GameManager {
     
     var playerTurn: Player = .player {
         didSet {
+            if endGame { return }
             delegate.playerChange(newPlayer: playerTurn)
-            if cartasJugador.count > 2, playerTurn == .house, !resetting {
-                if (passed) {
-                    delegate.revealHouseCards()
-                } else {
-                    delegate.playHouseCard(index: cartasCasa.count-2)
-                }
+            if passed, playerTurn == .house {
+                delegate.revealHouseCards()
+            } else if cartasJugador.count > 2, playerTurn == .house, !resetting {
+                delegate.playHouseCard(index: cartasCasa.count - 2)
             }
         }
     }
     
     var passed = false
     var resetting = false
+    var endGame = false
     
     private var cartasCasa: [Carta]! {
         didSet {
@@ -92,7 +92,7 @@ class GameManager {
         case .house:
             cartasCasa.append(c)
         }
-        if (playerTurn == .house ? cartasCasa : cartasJugador).count > 2 {
+        if (playerTurn == .house ? cartasCasa : cartasJugador).count > 2, !passed {
             switchPLayer()
         }
     }
@@ -103,13 +103,13 @@ class GameManager {
         if suma > 21 { return }
         if suma == 21 {
             delegate.endGame(winner: playerTurn.rawValue)
-        } else if playerTurn == .house && cartasJugador.count == 4 {
-            let playerScore = count(cartasJugador)
-            if suma > playerScore {
+        } else if cartasCasa.count == 4, !resetting {
+            let otherScore = count(playerTurn == .house ? cartasJugador : cartasCasa)
+            if suma > otherScore {
                 delegate.endGame(winner: playerTurn.rawValue)
-            } else if suma < playerScore {
+            } else if suma < otherScore {
                 delegate.endGame(winner: playerTurn.getOppositeValue())
-            } else {
+            } else if suma == otherScore {
                 delegate.endGame(winner: "Nadie. Es un empate")
             }
         }
@@ -123,7 +123,6 @@ class GameManager {
                 switch playerTurn {
                 case .player:
                     delegate.endGame(winner: playerTurn.getOppositeValue())
-                    break
                 case .house:
                     delegate.endGame(winner: playerTurn.getOppositeValue())
                 }
@@ -135,6 +134,7 @@ class GameManager {
     func resetTurn() {
         passed = false
         resetting = true
+        endGame = false
         playerTurn = .house
         cartasCasa.removeAll()
         playerTurn = .player
