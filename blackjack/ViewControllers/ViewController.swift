@@ -13,6 +13,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     
     @IBOutlet weak var resultLabel: UILabel!
     var gameManager: GameManager!
+    var animator: UIViewPropertyAnimator!
     
     @IBOutlet var cardsCollection: [CartaView]!
     @IBOutlet var playerCards: [CartaView]!
@@ -27,21 +28,33 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         gameManager = GameManager(delegate: self)
-        traverseCards(function: setCards, cardArray: cardsCollection)
+        traverseCards(cardClosures: setCards, cardArray: cardsCollection)
         firstSteps()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        traverseCards(cardClosures: animateTransition, cardArray: cardsCollection)
+    }
+    
     private func firstSteps() {
-        traverseCards(function: enableTap, cardArray: earlyHouseCards)
-        traverseCards(function: enableTap, cardArray: earlyPlayerCards)
+        traverseCards(cardClosures: enableTap, cardArray: earlyHouseCards)
+        traverseCards(cardClosures: enableTap, cardArray: earlyPlayerCards)
         for _ in 0...1 {
-            traverseCards(function: tap, cardArray: gameManager.playerTurn == .house ? earlyHouseCards : earlyPlayerCards)
+            traverseCards(cardClosures: tap, cardArray: gameManager.playerTurn == .house ? earlyHouseCards : earlyPlayerCards)
             gameManager.switchPLayer()
         }
     }
     
     func onTouch(carta: Carta) {
         gameManager.addCard(carta: carta)
+    }
+    
+    func animateTransition(carta: CartaView) {
+        carta.frame.origin.x -= view.frame.width
+        animator = UIViewPropertyAnimator(duration: 1, curve: .easeInOut, animations: {() -> Void in
+                carta.frame.origin.x += self.view.frame.width
+            })
+        animator.startAnimation()
     }
     
     func tap(carta: CartaView) {
@@ -51,7 +64,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     func endGame(winner: String) {
         gameManager.endGame = true
         resultLabel.text = "Ganador: "+winner
-        traverseCards(function: cancelTap, cardArray: cardsCollection)
+        traverseCards(cardClosures: cancelTap, cardArray: cardsCollection)
     }
     
     private func createRandomCard() -> Carta {
@@ -70,14 +83,17 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         carta.enableTap()
     }
     
-    private func traverseCards(function: (_ carta: CartaView) -> Void, cardArray: [CartaView]) {
+    typealias CardClosure = (_ carta: CartaView) -> Void
+    private func traverseCards(cardClosures: CardClosure..., cardArray: [CartaView]) {
         for carta in cardArray {
-            function(carta)
+            for f in cardClosures {
+                f(carta)
+            }
         }
     }
     
     @IBAction func reset(_ sender: UIButton) {
-        traverseCards(function: setCards, cardArray: cardsCollection)
+        traverseCards(cardClosures: setCards, animateTransition, cardArray: cardsCollection)
         resultLabel.text = ""
         gameManager.resetTurn()
         firstSteps()
@@ -88,8 +104,8 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     func playerChange(newPlayer: Player) {
-        traverseCards(function: cancelTap, cardArray: newPlayer == .house ? playerCards : houseCards)
-        traverseCards(function: enableTap, cardArray: newPlayer == .house ? houseCards : playerCards)
+        traverseCards(cardClosures: cancelTap, cardArray: newPlayer == .house ? playerCards : houseCards)
+        traverseCards(cardClosures: enableTap, cardArray: newPlayer == .house ? houseCards : playerCards)
     }
     
     func updateCounter(number: Int) {
@@ -106,7 +122,7 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
     }
     
     func revealHouseCards() {
-        traverseCards(function: tap, cardArray: houseCards)
+        traverseCards(cardClosures: tap, cardArray: houseCards)
     }
 }
 

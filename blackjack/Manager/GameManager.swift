@@ -47,8 +47,6 @@ class GameManager {
             delegate.playerChange(newPlayer: playerTurn)
             if passed, playerTurn == .house {
                 delegate.revealHouseCards()
-            } else if cartasJugador.count > 2, playerTurn == .house, !resetting {
-                delegate.playHouseCard(index: cartasCasa.count - 2)
             }
         }
     }
@@ -91,9 +89,6 @@ class GameManager {
             cartasJugador.append(c)
         case .house:
             cartasCasa.append(c)
-        }
-        if (playerTurn == .house ? cartasCasa : cartasJugador).count > 2, !passed {
-            switchPLayer()
         }
     }
     

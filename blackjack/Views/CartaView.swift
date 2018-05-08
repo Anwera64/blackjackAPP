@@ -16,14 +16,20 @@ class CartaView: UIView {
     
     private var carta: Carta?
     var delegate: onTouchDelegate?
+    
+    var cardFront: UIImageView!
+    var cardBack: UIImageView!
+    
     var volteada = false {
         didSet {
-            for view in self.subviews {
-                view.removeFromSuperview()
+            if volteada {
+                UIView.transition(from: cardBack, to: cardFront, duration: 1, options: .transitionFlipFromRight, completion: nil)
+            } else {
+                UIView.transition(from: cardFront, to: cardBack, duration: 1, options: .transitionFlipFromRight, completion: nil)
             }
-            setNeedsDisplay()
         }
     }
+    
     var tappable = false
     
     func removeTap() {
@@ -36,27 +42,32 @@ class CartaView: UIView {
         if volteada { self.volteada = false }
         let tapRecognizer: UIGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(voltear(_:)))
         addGestureRecognizer(tapRecognizer)
+        
+        cardFront.image = UIImage(named: "\(carta.palo.getString())/\(translateNumber(number: carta.numero))")
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        x
+        let origin = self.bounds.origin
+        let size = self.bounds.size
+        let frame = CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height)
+        
+        cardFront = UIImageView(frame: frame)
+        cardBack = UIImageView(frame: frame)
+        cardBack!.image = #imageLiteral(resourceName: "cardback")
     }
     
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code\
-        let origin = self.bounds.origin
-        let size = self.bounds.size
-        if volteada, let c = carta {
-            let cardFront = UIImageView(frame: CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height))
-            cardFront.image = UIImage(named: "\(c.palo.getString())/\(translateNumber(number: c.numero))")
+        if volteada {
             self.addSubview(cardFront)
         } else {
-            let cardBack = UIImageView(frame: CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height))
-            cardBack.image = #imageLiteral(resourceName: "cardback")
             self.addSubview(cardBack)
         }
+        
     }
     
     func enableTap() {
@@ -87,6 +98,5 @@ class CartaView: UIView {
             delegate?.onTouch(carta: c)
         }
     }
-    
     
 }
