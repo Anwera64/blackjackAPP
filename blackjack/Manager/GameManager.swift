@@ -51,6 +51,12 @@ class GameManager {
         }
     }
     
+    var baraja: Set<Carta>! {
+        didSet {
+            
+        }
+    }
+    
     var passed = false
     var resetting = false
     var endGame = false
@@ -71,6 +77,30 @@ class GameManager {
         cartasCasa = Array()
         cartasJugador = Array()
         self.delegate = delegate
+        baraja = Set()
+        createDeck()
+    }
+    
+    private func createDeck() {
+        var b = Array<Carta>()
+        for i in 1...13 {
+            for k in 0...3 {
+                b.append(Carta(i, Palo(rawValue: k)!))
+            }
+        }
+        b.shuffle()
+        for carta in b {
+            baraja.insert(carta)
+        }
+    }
+    
+    func getCard() -> Carta {
+        if let carta = baraja.popFirst() {
+            return carta
+        } else {
+            createDeck()
+            return getCard()
+        }
     }
     
     func switchPLayer() {
@@ -135,5 +165,20 @@ class GameManager {
         playerTurn = .player
         cartasJugador.removeAll()
         resetting = false
+    }
+}
+
+extension MutableCollection {
+    /// Shuffles the contents of this collection.
+    mutating func shuffle() {
+        let c = count
+        guard c > 1 else { return }
+        
+        for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            // Change `Int` in the next line to `IndexDistance` in < Swift 4.1
+            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            let i = index(firstUnshuffled, offsetBy: d)
+            swapAt(firstUnshuffled, i)
+        }
     }
 }

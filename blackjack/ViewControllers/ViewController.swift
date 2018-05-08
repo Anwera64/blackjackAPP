@@ -67,12 +67,8 @@ class ViewController: UIViewController, onTouchDelegate, gameDelegate {
         traverseCards(cardClosures: cancelTap, cardArray: cardsCollection)
     }
     
-    private func createRandomCard() -> Carta {
-        return Carta(Int(arc4random_uniform(13)+1), Palo(rawValue: Int(arc4random_uniform(4)))!)
-    }
-    
     private func setCards(carta: CartaView) {
-        carta.instantiate(createRandomCard(), delegate: self)
+        carta.instantiate(gameManager.getCard(), delegate: self)
     }
     
     private func cancelTap(carta: CartaView) {

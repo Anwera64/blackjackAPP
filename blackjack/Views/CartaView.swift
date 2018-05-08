@@ -48,7 +48,6 @@ class CartaView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        x
         let origin = self.bounds.origin
         let size = self.bounds.size
         let frame = CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height)

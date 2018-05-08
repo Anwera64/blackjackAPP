@@ -8,7 +8,19 @@
 
 import Foundation
 
-class Carta {
+class Carta: Hashable {
+    var hashValue: Int {
+        return (numero+palo.rawValue).hashValue
+    }
+    
+    static func == (lhs: Carta, rhs: Carta) -> Bool {
+        if lhs.hashValue == rhs.hashValue {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     var numero: Int!
     var palo: Palo!
     
