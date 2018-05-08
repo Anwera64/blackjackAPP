@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GameplayKit
 
 protocol gameDelegate {
     func endGame(winner: String)
@@ -63,7 +64,9 @@ class GameManager {
     
     private var cartasCasa: [Carta]! {
         didSet {
-            check21(cartas: cartasCasa)
+            if cartasCasa.count == 4 || cartasCasa.count < 3 {
+                check21(cartas: cartasCasa)
+            }
         }
     }
     private var cartasJugador: [Carta]! {
@@ -88,7 +91,7 @@ class GameManager {
                 b.append(Carta(i, Palo(rawValue: k)!))
             }
         }
-        b.shuffle()
+        b = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: b) as! [Carta]
         for carta in b {
             baraja.insert(carta)
         }
@@ -165,20 +168,5 @@ class GameManager {
         playerTurn = .player
         cartasJugador.removeAll()
         resetting = false
-    }
-}
-
-extension MutableCollection {
-    /// Shuffles the contents of this collection.
-    mutating func shuffle() {
-        let c = count
-        guard c > 1 else { return }
-        
-        for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-            // Change `Int` in the next line to `IndexDistance` in < Swift 4.1
-            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
-            let i = index(firstUnshuffled, offsetBy: d)
-            swapAt(firstUnshuffled, i)
-        }
     }
 }
